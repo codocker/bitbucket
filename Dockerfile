@@ -4,19 +4,25 @@ FROM ubuntu AS builder
 # 版本
 ENV VERSION 7.11.2
 ENV JDBC_VERSION 8.0.23
+ENV AGENT_VERSION 1.2.3
 
 
-WORKDIR /opt/altassian
+WORKDIR /opt/atlassian
 
 
 RUN apt update && apt install -y axel
 
+# 安装Bitbucket
 RUN axel --num-connections 64 --insecure "https://product-downloads.atlassian.com/software/stash/downloads/atlassian-bitbucket-${VERSION}.tar.gz"
 RUN tar -xzvf atlassian-bitbucket-${VERSION}.tar.gz && mv atlassian-bitbucket-${VERSION} bitbucket
 RUN chmod +x bitbucket/bin/*.sh
 
+# 安装JDBC
 RUN axel --num-connections 64 --insecure "https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-${JDBC_VERSION}.tar.gz"
 RUN tar -xzvf mysql-connector-java-${JDBC_VERSION}.tar.gz && mkdir -p /opt/atlassian/bitbucket/app/WEB-INF/lib/ && mv mysql-connector-java-${JDBC_VERSION}/mysql-connector-java-${JDBC_VERSION}.jar /opt/atlassian/bitbucket/app/WEB-INF/lib/mysql-connector-java-${JDBC_VERSION}.jar
+
+# 安装Agent（破解程序）
+RUN axel --num-connections 64 --insecure --output /opt/atlassian/agent/agent.jar "https://gitee.com/pengzhile/atlassian-agent/attach_files/283101/download/atlassian-agent-v${AGENT_VERSION}.tar.gz"
 
 
 
@@ -62,7 +68,7 @@ WORKDIR /config
 
 
 # 复制文件
-COPY --from=builder /opt/altassian /opt/altassian
+COPY --from=builder /opt/atlassian /opt/atlassian
 COPY docker /
 
 
