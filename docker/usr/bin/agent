@@ -1,0 +1,3 @@
+#!/bin/bash
+
+java -jar /opt/altassian/agent/agent.jar -p bitbucket -m aaa@bbb.com -n my_name -o https://zhile.io -s ABCD-1234-EFGH-5678
