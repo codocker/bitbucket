@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # 启动X Server服务器
-exec gosu "${USERNAME}" /opt/altassian/bitbucket/bin/start-bitbucket.sh
+exec gosu "${USERNAME}" /opt/atlassian/bitbucket/bin/start-bitbucket.sh -fg --no-search

@@ -16,13 +16,14 @@ RUN apt update && apt install -y axel
 RUN axel --num-connections 64 --insecure "https://product-downloads.atlassian.com/software/stash/downloads/atlassian-bitbucket-${VERSION}.tar.gz"
 RUN tar -xzvf atlassian-bitbucket-${VERSION}.tar.gz && mv atlassian-bitbucket-${VERSION} bitbucket
 RUN chmod +x bitbucket/bin/*.sh
+RUN chmod -R "u=rwX,g=rX,o=rX" /opt/atlassian/bitbucket
 
 # 安装JDBC
 RUN axel --num-connections 64 --insecure "https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-${JDBC_VERSION}.tar.gz"
 RUN tar -xzvf mysql-connector-java-${JDBC_VERSION}.tar.gz && mkdir -p /opt/atlassian/bitbucket/app/WEB-INF/lib/ && mv mysql-connector-java-${JDBC_VERSION}/mysql-connector-java-${JDBC_VERSION}.jar /opt/atlassian/bitbucket/app/WEB-INF/lib/mysql-connector-java-${JDBC_VERSION}.jar
 
 # 安装Agent（破解程序）
-RUN axel --num-connections 64 --insecure --output /opt/atlassian/agent/agent.jar "https://gitee.com/pengzhile/atlassian-agent/attach_files/283101/download/atlassian-agent-v${AGENT_VERSION}.tar.gz"
+RUN mkdir -p /opt/atlassian/agent && axel --num-connections 64 --insecure --output /opt/atlassian/agent/agent.jar "https://gitee.com/pengzhile/atlassian-agent/attach_files/283101/download/atlassian-agent-v${AGENT_VERSION}.tar.gz"
 
 
 
@@ -42,7 +43,7 @@ LABEL Description="Atlassian公司产品Bitbucket，用来做Git服务器。在�
 ENV BITBUCKET_HOME /config
 # 设置Java Agent
 ENV JAVA_HOME /usr/lib/jvm/java-14-openjdk-amd64
-ENV JAVA_OPTS -javaagent:/opt/altassian/agent/agent.jar
+ENV JAVA_OPTS -javaagent:/opt/atlassian/agent/agent.jar
 # 增加中文支持，不然命令行执行程序会报错
 ENV LANG zh_CN.UTF-8
 
@@ -92,7 +93,7 @@ RUN set -ex \
     # 安装守护进程，因为要Xvfb和Nuwa同时运行
     && apt install -y s6 gosu openjdk-14-jre \
     && chmod +x /usr/bin/entrypoint \
-    && chmod +x /usr/bin/agent \
+    && chmod +x /usr/bin/keygen \
     && chmod +x /etc/s6/.s6-svscan/* \
     && chmod +x /etc/s6/bitbucket/* \
     \
