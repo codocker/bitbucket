@@ -1,3 +1,16 @@
 #!/bin/sh
 
+# 写入反向代理配置
+if [ -z "${PROXY_DOMAIN}" ];then
+  cat>/config/shared/bitbucket.properties<<EOF
+server.port=7990
+server.secure=true
+server.scheme=${PROXY_SCHEME}
+server.proxy-port=${PROXY_PORT}
+server.proxy-name=${PROXY_DOMAIN}
+server.context-path=${CONTEXT_PATH}
+EOF
+fi
+
+# 启动程序
 chown -R "${USERNAME}":"${USERNAME}" "${BITBUCKET_HOME}"
