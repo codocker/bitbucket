@@ -12,5 +12,5 @@ server.context-path=${CONTEXT_PATH}
 EOF
 fi
 
-# 启动程序
+# 将主目录所有者改成系统创建的用户
 chown -R "${USERNAME}":"${USERNAME}" "${BITBUCKET_HOME}"
