@@ -1,5 +1,13 @@
 #!/bin/sh
 
+# 判断是否是安全连接
+if [ "${PROXY_SCHEME}" == "https" ] || [ "${PROXY_SCHEME}" == "HTTPS" ];then
+  SECURE="true"
+else
+  SECURE="false"
+fi
+
+
 # 写入反向代理配置
 if [ -z "${PROXY_DOMAIN}" ];then
   exec gosu "${USERNAME}" cat>/config/shared/bitbucket.properties<<EOF
@@ -11,6 +19,7 @@ server.proxy-name=${PROXY_DOMAIN}
 server.context-path=${CONTEXT_PATH}
 EOF
 fi
+
 
 # 将主目录所有者改成系统创建的用户
 chown -R "${USERNAME}":"${USERNAME}" "${BITBUCKET_HOME}"
