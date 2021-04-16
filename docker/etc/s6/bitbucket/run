@@ -1,4 +1,7 @@
 #!/bin/bash
 
+# 配置
+[[ -f ./setup ]] && source ./setup
+
 # 启动Bitbucket服务器
 exec gosu "${USERNAME}" /opt/atlassian/bitbucket/bin/start-bitbucket.sh -fg --no-search

@@ -2,7 +2,7 @@
 
 # 写入反向代理配置
 if [ -z "${PROXY_DOMAIN}" ];then
-  cat>/config/shared/bitbucket.properties<<EOF
+  exec gosu "${USERNAME}" cat>/config/shared/bitbucket.properties<<EOF
 server.port=7990
 server.secure=true
 server.scheme=${PROXY_SCHEME}
