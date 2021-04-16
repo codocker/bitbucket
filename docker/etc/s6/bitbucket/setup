@@ -12,7 +12,7 @@ fi
 if [ -z "${PROXY_DOMAIN}" ];then
   exec gosu "${USERNAME}" cat>/config/shared/bitbucket.properties<<EOF
 server.port=7990
-server.secure=true
+server.secure=${SECURE}
 server.scheme=${PROXY_SCHEME}
 server.proxy-port=${PROXY_PORT}
 server.proxy-name=${PROXY_DOMAIN}
