@@ -2,15 +2,20 @@
 
 # 判断是否是安全连接
 if [ "${PROXY_SCHEME}" == "https" ] || [ "${PROXY_SCHEME}" == "HTTPS" ];then
-  SECURE="true"
+  export SECURE="true"
 else
-  SECURE="false"
+  export SECURE="false"
 fi
 
 
 # 写入反向代理配置
 if [ -z "${PROXY_DOMAIN}" ];then
-  cat>/config/shared/bitbucket.properties<<EOF
+  CONFIG_FILE=/config/shared/bitbucket.properties
+  if [ ! -f "${CONFIG_FILE}" ]; then
+    touch "${CONFIG_FILE}"
+  fi
+
+  exec gosu "${USERNAME}" cat>"${CONFIG_FILE}"<<EOF
 server.port=7990
 server.secure=${SECURE}
 server.scheme=${PROXY_SCHEME}
