@@ -15,14 +15,12 @@ if [ -z "${PROXY_DOMAIN}" ];then
     touch "${CONFIG_FILE}"
   fi
 
-  exec gosu "${USERNAME}" cat>"${CONFIG_FILE}"<<EOF
-server.port=7990
-server.secure=${SECURE}
-server.scheme=${PROXY_SCHEME}
-server.proxy-port=${PROXY_PORT}
-server.proxy-name=${PROXY_DOMAIN}
-server.context-path=${CONTEXT_PATH}
-EOF
+  property server.port 7990 ${CONFIG_FILE}
+  property server.secure "${SECURE}" "${CONFIG_FILE}"
+  property server.scheme "${PROXY_SCHEME}" "${CONFIG_FILE}"
+  property server.proxy-port "${PROXY_PORT}" "${CONFIG_FILE}"
+  property server.proxy-name "${PROXY_DOMAIN}" "${CONFIG_FILE}"
+  property server.context-path "${CONTEXT_PATH}" "${CONFIG_FILE}"
 fi
 
 
