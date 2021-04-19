@@ -6,7 +6,7 @@ if [ ! -f "${setupFile}" ]; then
   source ./setup
 
   # 创建系统已配置的文件标识
-  touch "${setupFile}"
+  exec gosu "${USERNAME}" touch "${setupFile}"
 fi
 
 # 启动Bitbucket服务器
