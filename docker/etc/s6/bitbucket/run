@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 配置
-setupFile=/config/setup.lock
+setupFile=/config/.setup.lock
 if [ ! -f "${setupFile}" ]; then
   source ./setup
 
