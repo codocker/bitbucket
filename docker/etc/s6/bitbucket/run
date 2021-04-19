@@ -1,7 +1,13 @@
 #!/bin/bash
 
 # 配置
-[[ -f ./setup ]] && source ./setup
+setupFile=/config/shared/setup.lock
+if [ ! -f "${setupFile}" ]; then
+  source ./setup
+
+  # 创建系统已配置的文件标识
+  touch "${setupFile}"
+fi
 
 # 启动Bitbucket服务器
 exec gosu "${USERNAME}" /opt/atlassian/bitbucket/bin/start-bitbucket.sh -fg --no-search
