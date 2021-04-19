@@ -1,26 +1,26 @@
 #!/bin/sh
 
 # 判断是否是安全连接
-if [ "${PROXY_SCHEME}" == "https" ] || [ "${PROXY_SCHEME}" == "HTTPS" ];then
-  export SECURE="true"
+if [ "${PROXY_SCHEME}" == "https" ] || [ "${PROXY_SCHEME}" == "HTTPS" ] || [ "${PROXY_SCHEME}" == "Https" ];then
+  export secure="true"
 else
-  export SECURE="false"
+  export secure="false"
 fi
 
 
 # 写入反向代理配置
-if [ -z "${PROXY_DOMAIN}" ];then
-  CONFIG_FILE=/config/shared/bitbucket.properties
-  if [ ! -f "${CONFIG_FILE}" ]; then
-    touch "${CONFIG_FILE}"
+if [ -n "${PROXY_DOMAIN}" ];then
+  configFile=/config/shared/bitbucket.properties
+  if [ ! -f "${configFile}" ]; then
+    touch "${configFile}"
   fi
 
-  property server.port 7990 ${CONFIG_FILE}
-  property server.secure "${SECURE}" "${CONFIG_FILE}"
-  property server.scheme "${PROXY_SCHEME}" "${CONFIG_FILE}"
-  property server.proxy-port "${PROXY_PORT}" "${CONFIG_FILE}"
-  property server.proxy-name "${PROXY_DOMAIN}" "${CONFIG_FILE}"
-  property server.context-path "${CONTEXT_PATH}" "${CONFIG_FILE}"
+  property set server.port 7990 ${configFile}
+  property set server.secure "${secure}" "${configFile}"
+  property set server.scheme "${PROXY_SCHEME}" "${configFile}"
+  property set server.proxy-name "${PROXY_DOMAIN}" "${configFile}"
+  property set server.proxy-port "${PROXY_PORT}" "${configFile}"
+  property set server.context-path "${CONTEXT_PATH}" "${configFile}"
 fi
 
 
