@@ -20,6 +20,15 @@ if [ -n "${PROXY_DOMAIN}" ];then
   property set server.scheme "${PROXY_SCHEME}" "${configFile}"
   property set server.proxy-name "${PROXY_DOMAIN}" "${configFile}"
   property set server.proxy-port "${PROXY_PORT}" "${configFile}"
+fi
+
+# 写入基础地址
+if [ -n "${CONTEXT_PATH}" ];then
+  configFile=/config/shared/bitbucket.properties
+  if [ ! -f "${configFile}" ]; then
+    touch "${configFile}"
+  fi
+
   property set server.context-path "${CONTEXT_PATH}" "${configFile}"
 fi
 
