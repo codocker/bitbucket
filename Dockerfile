@@ -32,6 +32,7 @@ LABEL Description="Atlassian公司产品Bitbucket，用来做Git服务器。在�
 
 # 设置Bitbucket HOME目录
 ENV BITBUCKET_HOME /config
+ENV SET_PERMISSIONS true
 
 
 

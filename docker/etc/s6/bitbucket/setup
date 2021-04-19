@@ -34,4 +34,6 @@ fi
 
 
 # 将主目录所有者改成系统创建的用户
-chown -R "${USERNAME}":"${USERNAME}" "${BITBUCKET_HOME}"
+if [ "${SET_PERMISSIONS}" = true ];then
+  chown -R "${USERNAME}":"${USERNAME}" "${BITBUCKET_HOME}"
+fi
