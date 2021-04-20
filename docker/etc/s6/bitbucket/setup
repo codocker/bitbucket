@@ -34,6 +34,11 @@ fi
 
 
 # 将主目录所有者改成系统创建的用户
-if [ "${SET_PERMISSIONS}" = true ];then
+if [ "${SET_PERMISSIONS}" = true ] && [ ! -f "${permissionFile}" ];then
   chown -R "${USERNAME}":"${USERNAME}" "${BITBUCKET_HOME}"
+
+  permissionFile=/config/.permission.lock
+  if [ ! -f "${permissionFile}" ]; then
+    touch "${permissionFile}"
+  fi
 fi
