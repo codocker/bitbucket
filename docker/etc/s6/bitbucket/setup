@@ -12,7 +12,7 @@ fi
 if [ -n "${PROXY_DOMAIN}" ];then
   configFile=/config/shared/bitbucket.properties
   if [ ! -f "${configFile}" ]; then
-    touch "${configFile}"
+    exec gosu "${USERNAME}" touch "${configFile}"
   fi
 
   property set server.port 7990 ${configFile}
@@ -26,7 +26,7 @@ fi
 if [ -n "${CONTEXT_PATH}" ];then
   configFile=/config/shared/bitbucket.properties
   if [ ! -f "${configFile}" ]; then
-    touch "${configFile}"
+    exec gosu "${USERNAME}" touch "${configFile}"
   fi
 
   property set server.context-path "${CONTEXT_PATH}" "${configFile}"
@@ -39,6 +39,6 @@ if [ "${SET_PERMISSIONS}" = true ] && [ ! -f "${permissionFile}" ];then
 
   permissionFile=/config/.permission.lock
   if [ ! -f "${permissionFile}" ]; then
-    touch "${permissionFile}"
+    exec gosu "${USERNAME}" touch "${permissionFile}"
   fi
 fi
