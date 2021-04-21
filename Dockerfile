@@ -14,7 +14,7 @@ RUN apt update && apt install -y axel curl
 RUN axel --num-connections 64 --insecure "https://product-downloads.atlassian.com/software/stash/downloads/atlassian-bitbucket-${VERSION}.tar.gz"
 RUN tar -xzvf atlassian-bitbucket-${VERSION}.tar.gz && mv atlassian-bitbucket-${VERSION} bitbucket
 # 不需要启动内部Elasticsearch程序，强制使用外部搜索引擎
-RUN rm -rf /opt/atlassian/elasticsearch && rm -rf /opt/atlassian/bin/_start-search.sh && rm -rf /opt/atlassian/bin/_stop-search.sh
+RUN rm -rf /opt/atlassian/bitbucket/elasticsearch && rm -rf /opt/atlassian/bitbucket/bin/_start-search.sh && rm -rf /opt/atlassian/bitbucket/bin/_stop-search.sh
 
 
 
