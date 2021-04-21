@@ -1,44 +1,52 @@
 #!/bin/sh
 
 # 判断是否是安全连接
-if [ "${PROXY_SCHEME}" == "https" ] || [ "${PROXY_SCHEME}" == "HTTPS" ] || [ "${PROXY_SCHEME}" == "Https" ];then
+if [ "${PROXY_SCHEME}" == "https" ] || [ "${PROXY_SCHEME}" == "HTTPS" ] || [ "${PROXY_SCHEME}" == "Https" ]; then
   export secure="true"
 else
   export secure="false"
 fi
 
 
+sharedDir=/config/shared
+configFile=${sharedDir}/bitbucket.properties
 # 写入反向代理配置
-if [ -n "${PROXY_DOMAIN}" ];then
-  configFile=/config/shared/bitbucket.properties
+if [ -n "${PROXY_DOMAIN}" ]; then
   if [ ! -f "${configFile}" ]; then
-    exec gosu "${USERNAME}" touch "${configFile}"
+    if [ ! -d "${sharedDir}" ]; then
+      gosu "${USERNAME}" mkdir -p "${sharedDir}"
+    fi
+
+    gosu "${USERNAME}" touch "${configFile}"
   fi
 
-  property set server.port 7990 ${configFile}
-  property set server.secure "${secure}" "${configFile}"
-  property set server.scheme "${PROXY_SCHEME}" "${configFile}"
-  property set server.proxy-name "${PROXY_DOMAIN}" "${configFile}"
-  property set server.proxy-port "${PROXY_PORT}" "${configFile}"
+  gosu "${USERNAME}" property set server.port 7990 ${configFile}
+  gosu "${USERNAME}" property set server.secure "${secure}" "${configFile}"
+  gosu "${USERNAME}" property set server.scheme "${PROXY_SCHEME}" "${configFile}"
+  gosu "${USERNAME}" property set server.proxy-name "${PROXY_DOMAIN}" "${configFile}"
+  gosu "${USERNAME}" property set server.proxy-port "${PROXY_PORT}" "${configFile}"
 fi
 
 # 写入基础地址
-if [ -n "${CONTEXT_PATH}" ];then
-  configFile=/config/shared/bitbucket.properties
+if [ -n "${CONTEXT_PATH}" ]; then
   if [ ! -f "${configFile}" ]; then
-    exec gosu "${USERNAME}" touch "${configFile}"
+    if [ ! -d "${sharedDir}" ]; then
+      gosu "${USERNAME}" mkdir -p "${sharedDir}"
+    fi
+
+    gosu "${USERNAME}" touch "${configFile}"
   fi
 
-  property set server.context-path "${CONTEXT_PATH}" "${configFile}"
+  gosu "${USERNAME}" property set server.context-path "${CONTEXT_PATH}" "${configFile}"
 fi
 
 
 # 将主目录所有者改成系统创建的用户
-if [ "${SET_PERMISSIONS}" = true ] && [ ! -f "${permissionFile}" ];then
+permissionFile=/config/.permission.lock
+if [ "${SET_PERMISSIONS}" == true ] && [ ! -f "${permissionFile}" ]; then
   chown -R "${USERNAME}":"${USERNAME}" "${BITBUCKET_HOME}"
 
-  permissionFile=/config/.permission.lock
   if [ ! -f "${permissionFile}" ]; then
-    exec gosu "${USERNAME}" touch "${permissionFile}"
+    gosu "${USERNAME}" touch "${permissionFile}"
   fi
 fi
