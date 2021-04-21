@@ -32,7 +32,7 @@ sudo docker pull storezhang/bitbucket && sudo docker run \
 sudo docker exec -it Bitbucket /bin/bash
 ```
 
-#### 执行Agent命名
+#### 执行Agent
 
 ```shell
 keygen -p bitbucket -m xxx@xxx.com -n xxx -o https://xxx.com -s ABCD-CFDS-JJFF-LLKD -d
