@@ -11,6 +11,9 @@ sudo docker pull storezhang/bitbucket && sudo docker run \
   --volume=/home/storezhang/data/docker/bitbucket:/config:rw \
   --env=UID=$(id -u xxx) \
   --env=GID=$(id -g xxx) \
+  --env=ORG=https://xxx.com \
+  --env=NAME=xxx \
+  --env=EMAIL=abc@xxx.com \
   --env=PROXY_DOMAIN=bitbucket.ruijc.com \
   --env=PROXY_PORT=20443 \
   --publish=37990:7990 \
