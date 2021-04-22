@@ -39,9 +39,6 @@ ENV SET_PERMISSIONS true
 # 开放端口
 # Bitbucket本身的端口
 EXPOSE 7990
-# 内置Elasticsearch端口
-EXPOSE 7992
-EXPOSE 7993
 
 
 
