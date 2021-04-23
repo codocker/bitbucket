@@ -12,10 +12,9 @@ RUN apt update && apt install -y axel curl
 
 # 安装Bitbucket
 RUN axel --num-connections 64 --insecure "https://product-downloads.atlassian.com/software/stash/downloads/atlassian-bitbucket-${VERSION}.tar.gz"
-RUN tar -xzvf atlassian-bitbucket-${VERSION}.tar.gz && mv atlassian-bitbucket-${VERSION} bitbucket
+RUN tar -xzf atlassian-bitbucket-${VERSION}.tar.gz && mv atlassian-bitbucket-${VERSION} bitbucket
 # 不需要启动内部Elasticsearch程序，强制使用外部搜索引擎
 RUN rm -rf /opt/atlassian/bitbucket/elasticsearch && rm -rf /opt/atlassian/bitbucket/bin/_start-search.sh && rm -rf /opt/atlassian/bitbucket/bin/_stop-search.sh
-RUN chown -R ${USERNAME} /opt/atlassian/bitbucket
 
 
 
@@ -66,7 +65,7 @@ RUN set -ex \
     \
     \
     # 安装MySQL/MariaDB驱动
-    && cp -r /opt/oracle/mariadb/lib /opt/atlassian/bitbucket/app/WEB-INF/lib \
+    && cp -r /opt/oracle/mariadb/lib /opt/atlassian/bitbucket/app/WEB-INF \
     \
     \
     \
