@@ -8,7 +8,7 @@ else
 fi
 
 
-sharedDir=/config/shared
+sharedDir=${BITBUCKET_HOME}/shared
 configFile=${sharedDir}/bitbucket.properties
 # 写入反向代理配置
 if [ -n "${PROXY_DOMAIN}" ]; then
@@ -20,7 +20,7 @@ if [ -n "${PROXY_DOMAIN}" ]; then
     gosu "${USERNAME}" touch "${configFile}"
   fi
 
-  gosu "${USERNAME}" property set server.port 7990 ${configFile}
+  gosu "${USERNAME}" property set server.port 7990 "${configFile}"
   gosu "${USERNAME}" property set server.secure "${secure}" "${configFile}"
   gosu "${USERNAME}" property set server.scheme "${PROXY_SCHEME}" "${configFile}"
   gosu "${USERNAME}" property set server.proxy-name "${PROXY_DOMAIN}" "${configFile}"
@@ -42,7 +42,7 @@ fi
 
 
 # 将主目录所有者改成系统创建的用户
-permissionFile=/config/.permission.lock
+permissionFile=${BITBUCKET_HOME}/.permission.lock
 if [ "${SET_PERMISSIONS}" == true ] && [ ! -f "${permissionFile}" ]; then
   chown -R "${USERNAME}":"${USERNAME}" "${BITBUCKET_HOME}"
 
