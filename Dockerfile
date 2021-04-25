@@ -8,13 +8,15 @@ ENV VERSION 7.11.2
 WORKDIR /opt/atlassian
 
 
-RUN apt update && apt install -y axel curl
+RUN apt update && apt install -y axel
 
 # 安装Bitbucket
-RUN axel --num-connections 64 --insecure "https://product-downloads.atlassian.com/software/stash/downloads/atlassian-bitbucket-${VERSION}.tar.gz"
-RUN tar -xzf atlassian-bitbucket-${VERSION}.tar.gz && mv atlassian-bitbucket-${VERSION} bitbucket
+RUN axel --num-connections 64 --insecure --output bitbucket${VERSION}.tar.gz "https://product-downloads.atlassian.com/software/stash/downloads/atlassian-bitbucket-${VERSION}.tar.gz"
+RUN tar -xzf bitbucket${VERSION}.tar.gz
+RUN mv atlassian-bitbucket-${VERSION} bitbucket
 # 不需要启动内部Elasticsearch程序，强制使用外部搜索引擎
-RUN rm -rf /opt/atlassian/bitbucket/elasticsearch && rm -rf /opt/atlassian/bitbucket/bin/_start-search.sh && rm -rf /opt/atlassian/bitbucket/bin/_stop-search.sh
+RUN rm -rf /opt/atlassian/bitbucket/elasticsearch
+RUN rm -rf /opt/atlassian/bitbucket/bin/_start-search.sh && rm -rf /opt/atlassian/bitbucket/bin/_stop-search.sh
 
 
 
@@ -24,15 +26,15 @@ RUN rm -rf /opt/atlassian/bitbucket/elasticsearch && rm -rf /opt/atlassian/bitbu
 FROM storezhang/atlassian
 
 
+
 MAINTAINER storezhang "storezhang@gmail.com"
-LABEL architecture="AMD64/x86_64" version="latest" build="2021-04-13"
+LABEL architecture="AMD64/x86_64" version="latest" build="2021-04-25"
 LABEL Description="Atlassian公司产品Bitbucket，用来做Git服务器。在原来的基础上增加了MySQL/MariaDB驱动以及太了解程序。"
 
 
 
 # 设置Bitbucket HOME目录
 ENV BITBUCKET_HOME /config
-ENV SET_PERMISSIONS true
 
 
 
@@ -65,7 +67,7 @@ RUN set -ex \
     \
     \
     # 安装MySQL/MariaDB驱动
-    && cp -r /opt/oracle/mariadb/lib /opt/atlassian/bitbucket/app/WEB-INF \
+    && cp -r /opt/oracle/mysql/lib /opt/atlassian/bitbucket/app/WEB-INF \
     \
     \
     \
