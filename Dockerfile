@@ -2,7 +2,7 @@ FROM storezhang/ubuntu AS builder
 
 
 # 版本
-ENV VERSION 7.11.2
+ENV VERSION 7.12.0
 
 
 WORKDIR /opt/atlassian
