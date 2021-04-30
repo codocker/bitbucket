@@ -4,4 +4,5 @@
 source ./setup
 
 # 启动Bitbucket服务器
+JAVA_OPTS="${JAVA_OPTS} -javaagent:/opt/atlassian/agent/agent.jar"
 exec gosu "${USERNAME}" /opt/atlassian/bitbucket/bin/start-bitbucket.sh -fg --no-search

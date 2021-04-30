@@ -1,8 +1,8 @@
-FROM storezhang/ubuntu AS builder
+FROM ubuntu AS builder
 
 
 # 版本
-ENV VERSION 7.12.0
+ENV VERSION 7.12.1
 
 
 WORKDIR /opt/atlassian
@@ -28,13 +28,8 @@ FROM storezhang/atlassian
 
 
 MAINTAINER storezhang "storezhang@gmail.com"
-LABEL architecture="AMD64/x86_64" version="latest" build="2021-04-25"
+LABEL architecture="AMD64/x86_64" version="latest" build="2021-04-28"
 LABEL Description="Atlassian公司产品Bitbucket，用来做Git服务器。在原来的基础上增加了MySQL/MariaDB驱动以及太了解程序。"
-
-
-
-# 设置Bitbucket HOME目录
-ENV BITBUCKET_HOME /config
 
 
 
@@ -63,6 +58,7 @@ RUN set -ex \
     \
     # 增加执行权限
     && chmod +x /etc/s6/bitbucket/* \
+    && chmod +x /usr/bin/bitbucket \
     \
     \
     \
@@ -74,3 +70,8 @@ RUN set -ex \
     # 清理镜像，减少无用包
     && rm -rf /var/lib/apt/lists/* \
     && apt autoclean
+
+
+
+# 设置Bitbucket HOME目录
+ENV BITBUCKET_HOME /config

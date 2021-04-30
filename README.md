@@ -38,7 +38,7 @@ sudo docker exec -it Bitbucket /bin/bash
 #### 执行Agent
 
 ```shell
-keygen bitbucket -s ABCD-CFDS-JJFF-LLKD
+bitbucket 插件
 ```
 
 复制序列号到系统，下一步就可以了

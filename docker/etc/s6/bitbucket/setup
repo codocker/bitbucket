@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # 判断是否是安全连接
-if [ "${PROXY_SCHEME}" == "https" ] || [ "${PROXY_SCHEME}" == "HTTPS" ] || [ "${PROXY_SCHEME}" == "Https" ]; then
+if [ "${PROXY_SCHEME}" = "https" ] || [ "${PROXY_SCHEME}" = "HTTPS" ] || [ "${PROXY_SCHEME}" = "Https" ]; then
   export secure="true"
 else
   export secure="false"
@@ -9,17 +9,32 @@ fi
 
 
 sharedDir=${BITBUCKET_HOME}/shared
-configFile=${sharedDir}/bitbucket.properties
-# 写入反向代理配置
-if [ -n "${PROXY_DOMAIN}" ]; then
-  if [ ! -f "${configFile}" ]; then
-    if [ ! -d "${sharedDir}" ]; then
-      gosu "${USERNAME}" mkdir -p "${sharedDir}"
-    fi
+# 创建配置目录
+if [ ! -d "${sharedDir}" ]; then
+  gosu "${USERNAME}" mkdir "${sharedDir}"
+fi
 
-    gosu "${USERNAME}" touch "${configFile}"
+# 检查配置文件
+configFile=${sharedDir}/bitbucket.properties
+# 写入数据库配置
+if [ ! -f "${configFile}" ]; then
+  dbUser="${DB_USER}"
+  dbPassword="${DB_PASSWORD}"
+  if [ "${DB_TYPE}" = "mysql5" ] || [ "${DB_TYPE}" = "mysql8" ]; then
+    dbDriver="com.mysql.jdbc.Driver"
+    dbUrl="jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?characterEncoding=utf8&useUnicode=true&useSSL=false"
   fi
 
+  gosu "${USERNAME}" cat>"${configFile}"<<EOF
+jdbc.driver=${dbDriver}
+jdbc.url=${dbUrl}
+jdbc.user=${dbUser}
+jdbc.password=${dbPassword}
+EOF
+fi
+
+# 写入反向代理配置
+if [ -n "${PROXY_DOMAIN}" ]; then
   gosu "${USERNAME}" property set server.port 7990 "${configFile}"
   gosu "${USERNAME}" property set server.secure "${secure}" "${configFile}"
   gosu "${USERNAME}" property set server.scheme "${PROXY_SCHEME}" "${configFile}"
@@ -29,21 +44,13 @@ fi
 
 # 写入基础地址
 if [ -n "${CONTEXT_PATH}" ]; then
-  if [ ! -f "${configFile}" ]; then
-    if [ ! -d "${sharedDir}" ]; then
-      gosu "${USERNAME}" mkdir -p "${sharedDir}"
-    fi
-
-    gosu "${USERNAME}" touch "${configFile}"
-  fi
-
   gosu "${USERNAME}" property set server.context-path "${CONTEXT_PATH}" "${configFile}"
 fi
 
 
 # 将主目录所有者改成系统创建的用户
 permissionFile=${BITBUCKET_HOME}/.permission.lock
-if [ "${SET_PERMISSIONS}" == true ] && [ ! -f "${permissionFile}" ]; then
+if [ "${SET_PERMISSIONS}" = true ] && [ ! -f "${permissionFile}" ]; then
   chown -R "${USERNAME}":"${USERNAME}" "${BITBUCKET_HOME}"
 
   if [ ! -f "${permissionFile}" ]; then
