@@ -2,7 +2,7 @@ FROM ubuntu AS builder
 
 
 # 版本
-ENV VERSION 7.14.0
+ENV VERSION 7.13.0
 
 
 WORKDIR /opt/atlassian
