@@ -20,8 +20,10 @@ configFile=${sharedDir}/bitbucket.properties
 if [ ! -f "${configFile}" ]; then
   dbUser="${DB_USER}"
   dbPassword="${DB_PASSWORD}"
-  if [ "${DB_TYPE}" = "mysql5" ] || [ "${DB_TYPE}" = "mysql8" ]; then
-    dbDriver="com.mysql.jdbc.Driver"
+  dbDriver="com.mysql.jdbc.Driver"
+  if [ "${DB_TYPE}" = "mysql5" ]; then
+    dbUrl="jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?characterEncoding=utf8&useUnicode=true"
+  elif [ "${DB_TYPE}" = "mysql8" ]; then
     dbUrl="jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?characterEncoding=utf8&useUnicode=true&useSSL=false"
   fi
 
