@@ -75,3 +75,6 @@ RUN set -ex \
 
 # 设置Bitbucket HOME目录
 ENV BITBUCKET_HOME /config
+
+# 健康检查
+HEALTHCHECK --interval=15s --timeout=5s --retries=3 --start-period=1m CMD curl -ifs http://127.0.0.1:7990 || exit 1
