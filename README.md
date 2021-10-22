@@ -1,7 +1,8 @@
 # docker-bitbucket
 
 基于最新版本的Atlassian Bitbucket版本打包的Docker镜像，功能
-- 集成了MySQL/MariaDB驱动以及最新可用的Agent程序
+- 集成了MySQL/MariaDB驱动
+- 最新可用的Agent程序
 - 集成健康检查
 
 ## 使用方法
