@@ -1,4 +1,4 @@
-FROM storezhang/alpine AS builder
+FROM ubuntu AS builder
 
 
 # 版本
@@ -8,8 +8,8 @@ ENV VERSION 7.6.7
 WORKDIR /opt/atlassian
 
 
-RUN apk update
-RUN apk add axel
+RUN apt update -y
+RUN apt install axel -y
 
 # 安装Bitbucket
 RUN axel --num-connections 64 --insecure --output bitbucket${VERSION}.tar.gz "https://product-downloads.atlassian.com/software/stash/downloads/atlassian-bitbucket-${VERSION}.tar.gz"
@@ -51,8 +51,9 @@ RUN set -ex \
     \
     \
     # 安装Git环境
-    && apk update \
-    && apk --no-cache add git \
+    && apt update -y \
+    && apt upgrade -y \
+    && apt install git \
     \
     \
     \
@@ -68,7 +69,8 @@ RUN set -ex \
     \
     \
     # 清理镜像，减少无用包
-    && rm -rf /var/cache/apk/*
+    && rm -rf /var/lib/apt/lists/* \
+    && apt autoclean
 
 
 
