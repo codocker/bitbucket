@@ -75,3 +75,8 @@ RUN set -ex \
 # 设置Bitbucket HOME目录
 ENV BITBUCKET_HOME /config
 ENV LOG_EXPIRED_DAYS 30
+
+
+
+# 健康检查
+HEALTHCHECK --interval=15s --timeout=5s --retries=3 CMD curl --include --fail http://127.0.0.1:7990
