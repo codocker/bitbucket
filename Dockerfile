@@ -1,4 +1,4 @@
-FROM ubuntu AS builder
+FROM storezhang/alpine AS builder
 
 
 # 版本
