@@ -28,7 +28,7 @@ FROM storezhang/atlassian
 
 
 MAINTAINER storezhang "storezhang@gmail.com"
-LABEL architecture="AMD64/x86_64" version="latest" build="2021-06-28"
+LABEL architecture="AMD64/x86_64" version="latest" build="2021-10-22"
 LABEL Description="Atlassian公司产品Bitbucket，用来做Git服务器。在原来的基础上增加了MySQL/MariaDB驱动以及太了解程序"
 
 
@@ -50,9 +50,8 @@ RUN set -ex \
     \
     \
     # 安装Git环境
-    && apt update -y --fix-missing \
-    && apt upgrade -y \
-    && apt install -y git \
+    && apk update \
+    && apk --no-cache add git \
     \
     \
     \
@@ -68,13 +67,9 @@ RUN set -ex \
     \
     \
     # 清理镜像，减少无用包
-    && rm -rf /var/lib/apt/lists/* \
-    && apt autoclean
+    && rm -rf /var/cache/apk/*
 
 
 
 # 设置Bitbucket HOME目录
 ENV BITBUCKET_HOME /config
-
-# 健康检查
-HEALTHCHECK --interval=15s --timeout=5s --retries=3 --start-period=1m CMD curl -ifs http://127.0.0.1:7990 || exit 1
