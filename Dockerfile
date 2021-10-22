@@ -53,7 +53,7 @@ RUN set -ex \
     # 安装Git环境
     && apt update -y \
     && apt upgrade -y \
-    && apt install git \
+    && apt install git -y \
     \
     \
     \
