@@ -74,4 +74,3 @@ RUN set -ex \
 
 # 设置Bitbucket HOME目录
 ENV BITBUCKET_HOME /config
-ENV LOG_EXPIRED_DAYS 30
