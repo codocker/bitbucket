@@ -26,7 +26,7 @@ sudo docker pull storezhang/bitbucket && sudo docker run \
   storezhang/bitbucket
 ```
 
-提供了比较好的`User Mapping`功能，指定环境变量`UID`和GID为相应的用户和组就可以了
+提供了比较好的`User Mapping`功能，指定环境变量`UID`和`GID`为相应的用户和组就可以了
 
 ### 使用Agent
 
