@@ -59,3 +59,6 @@ if [ "${SET_PERMISSIONS}" = true ] && [ ! -f "${permissionFile}" ]; then
     gosu "${USERNAME}" touch "${permissionFile}"
   fi
 fi
+
+# 删除多余的日志文件
+find "${BITBUCKET_HOME}"/log -mtime +"${LOG_EXPIRED_DAYS}" -delete

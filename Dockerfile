@@ -8,7 +8,8 @@ ENV VERSION 7.6.7
 WORKDIR /opt/atlassian
 
 
-RUN apt update && apt install -y axel
+RUN apk update
+RUN apk add axel
 
 # 安装Bitbucket
 RUN axel --num-connections 64 --insecure --output bitbucket${VERSION}.tar.gz "https://product-downloads.atlassian.com/software/stash/downloads/atlassian-bitbucket-${VERSION}.tar.gz"
@@ -73,3 +74,4 @@ RUN set -ex \
 
 # 设置Bitbucket HOME目录
 ENV BITBUCKET_HOME /config
+ENV LOG_EXPIRED_DAYS 30
